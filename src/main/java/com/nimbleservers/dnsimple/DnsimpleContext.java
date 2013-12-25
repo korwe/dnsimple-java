@@ -80,7 +80,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public List<Domain> getDomains() throws UnexpectedResponseException, IOException {
+  public List<Domain> getDomains() {
     String uri = END_POINT + "/domains";
     List<Domain> result = new LinkedList<Domain>();
     
@@ -114,7 +114,8 @@ public class DnsimpleContext {
             result.add(domain);
         }
       }
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -125,7 +126,7 @@ public class DnsimpleContext {
   /**
    * @see #getDomain(String)
    */
-  public Domain getDomain(Domain domain) throws UnexpectedResponseException, IOException {
+  public Domain getDomain(Domain domain) {
     return getDomain(domain.getName());
   }
   
@@ -137,7 +138,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Domain getDomain(String domain) throws UnexpectedResponseException, IOException {
+  public Domain getDomain(String domain) {
     String uri = END_POINT + "/domains/" + domain;
     HttpGet httpGet = new HttpGet(uri);
     
@@ -159,7 +160,8 @@ public class DnsimpleContext {
       }
       
       return parseDomain(entity);
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -178,7 +180,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Domain addDomain(String domain) throws UnexpectedResponseException, IOException {
+  public Domain addDomain(String domain) {
     String uri = END_POINT + "/domains";
     HashMap<String, Domain> map = new HashMap<String, Domain>();
     HttpPost httpPost = new HttpPost(uri);
@@ -188,12 +190,12 @@ public class DnsimpleContext {
     
     HttpResponse response = null;
     HttpEntity entity = null;
+    try {    
+    	map.put("domain", new Domain(domain));
+    	httpPost.setHeaders(headers);
+    	httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
     
-    map.put("domain", new Domain(domain));
-    httpPost.setHeaders(headers);
-    httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
-    
-    try {
+
       response = httpClient.execute(httpPost);
       entity = response.getEntity();
       statusCode = response.getStatusLine().getStatusCode();
@@ -203,7 +205,8 @@ public class DnsimpleContext {
       }
       
       return parseDomain(entity);
-      
+    } catch(IOException e) {
+    	throw new RuntimeException(e);
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -217,7 +220,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public boolean isDomainAvailable(String domain) throws UnexpectedResponseException, IOException {
+  public boolean isDomainAvailable(String domain) {
     
     String uri = END_POINT + "/domains/" + domain + "/check";
     
@@ -242,7 +245,8 @@ public class DnsimpleContext {
         // May need to make a more flexible exception for cases such as this
         throw new UnexpectedResponseException(HttpStatus.SC_OK, statusCode);
       }
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);
     } finally {
       try { EntityUtils.consume(response.getEntity()); } catch(Exception e) {}
     }
@@ -261,7 +265,7 @@ public class DnsimpleContext {
   /**
    * @see #enableAutoRenewal(String)
    */
-  public Domain enableAutoRenewal(Domain domain) throws UnexpectedResponseException, IOException {
+  public Domain enableAutoRenewal(Domain domain) {
     return enableAutoRenewal(domain.getName());
   }
   
@@ -273,7 +277,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Domain enableAutoRenewal(String domain) throws UnexpectedResponseException, IOException {
+  public Domain enableAutoRenewal(String domain) {
     String uri = END_POINT + "/domains/" + domain + "/auto_renewal";
     HashMap<String, Object> map = new HashMap<String, Object>();
     HttpPost httpPost = new HttpPost(uri);
@@ -284,11 +288,11 @@ public class DnsimpleContext {
     HttpResponse response = null;
     HttpEntity entity = null;
     
-    map.put("auto_renewal", new Object());
-    httpPost.setHeaders(headers);
-    httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
-    
     try {
+        map.put("auto_renewal", new Object());
+        httpPost.setHeaders(headers);
+        httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+        
       response = httpClient.execute(httpPost);
       entity = response.getEntity();
       statusCode = response.getStatusLine().getStatusCode();
@@ -298,7 +302,8 @@ public class DnsimpleContext {
       }
       
       return parseDomain(entity);
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);      
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -307,7 +312,7 @@ public class DnsimpleContext {
   /**
    * @see #disableAutoRenewal(String)
    */
-  public Domain disableAutoRenewal(Domain domain) throws UnexpectedResponseException, IOException {
+  public Domain disableAutoRenewal(Domain domain) {
     return disableAutoRenewal(domain.getName());
   }
   
@@ -319,7 +324,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Domain disableAutoRenewal(String domain) throws UnexpectedResponseException, IOException {
+  public Domain disableAutoRenewal(String domain) {
     String uri = END_POINT + "/domains/" + domain + "/auto_renewal";
     HttpDelete httpDelete = new HttpDelete(uri);
     
@@ -341,7 +346,8 @@ public class DnsimpleContext {
       }
       
       return parseDomain(entity);
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);      
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -358,7 +364,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public boolean setNameServers(String domain, Collection<String> nameServers) throws IllegalStateException, UnexpectedResponseException, IOException {
+  public boolean setNameServers(String domain, Collection<String> nameServers) {
     
     if(nameServers.size() > 6) {
       throw new IllegalStateException("Maximum of 6 name servers supported. Number given: " + nameServers.size());
@@ -384,17 +390,18 @@ public class DnsimpleContext {
       i++;
     }
     
-    httpPost.setHeaders(headers);
-    httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
-    
     try {
+        httpPost.setHeaders(headers);
+        httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+        
       response = httpClient.execute(httpPost);
       statusCode = response.getStatusLine().getStatusCode();
       
       if(statusCode != expectedCode) {
         throw new UnexpectedResponseException(expectedCode, statusCode);
       }
-    
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);    
     } finally {
       try { EntityUtils.consume(response.getEntity()); } catch(Exception e) {}
     }
@@ -405,7 +412,7 @@ public class DnsimpleContext {
   /**
    * @see #getRecords(String, Record)
    */
-  public List<Record> getRecords(Domain domain) throws UnexpectedResponseException, IOException {
+  public List<Record> getRecords(Domain domain) {
     return getRecords(domain.getName());
   }
   
@@ -463,7 +470,7 @@ public class DnsimpleContext {
   /**
    * @see #addRecord(String, Record)
    */
-  public Record addRecord(Domain domain, Record record) throws UnexpectedResponseException, IOException {
+  public Record addRecord(Domain domain, Record record) {
     return addRecord(domain.getName(), record);
   }
   
@@ -499,7 +506,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Record addRecord(String domain, Record record) throws UnexpectedResponseException, IOException {
+  public Record addRecord(String domain, Record record) {
     String uri = END_POINT + "/domains/" + domain + "/records";
     HashMap<String, Record> map = new HashMap<String, Record>();
     HttpPost httpPost = new HttpPost(uri);
@@ -510,11 +517,11 @@ public class DnsimpleContext {
     HttpResponse response = null;
     HttpEntity entity = null;
     
-    map.put("record", record);
-    httpPost.setHeaders(headers);
-    httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
-    
     try {
+        map.put("record", record);
+        httpPost.setHeaders(headers);
+        httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+        
       response = httpClient.execute(httpPost);
       entity = response.getEntity();
       statusCode = response.getStatusLine().getStatusCode();
@@ -524,7 +531,8 @@ public class DnsimpleContext {
       }
       
       return parseRecord(entity);
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);      
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -534,7 +542,7 @@ public class DnsimpleContext {
   /**
    * @see {@link #updateRecord(String, String, Record)
    */
-  public Record updateRecord(Domain domain, String recordId, Record record) throws UnexpectedResponseException, IOException {
+  public Record updateRecord(Domain domain, String recordId, Record record) {
     return updateRecord(domain.getName(), recordId, record);
   }
   
@@ -548,7 +556,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Record updateRecord(String domain, String recordId, Record record) throws UnexpectedResponseException, IOException {
+  public Record updateRecord(String domain, String recordId, Record record) {
     String uri = END_POINT + "/domains/" + domain + "/records/" + recordId;
     HashMap<String, Record> map = new HashMap<String, Record>();
     HttpPut httpPut = new HttpPut(uri);
@@ -559,11 +567,11 @@ public class DnsimpleContext {
     HttpResponse response = null;
     HttpEntity entity = null;
     
-    map.put("record", record);
-    httpPut.setHeaders(headers);
-    httpPut.setEntity(new StringEntity(gson.toJson(map), CHARSET));
-    
     try {
+        map.put("record", record);
+        httpPut.setHeaders(headers);
+        httpPut.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+        
       response = httpClient.execute(httpPut);
       entity = response.getEntity();
       statusCode = response.getStatusLine().getStatusCode();
@@ -573,7 +581,8 @@ public class DnsimpleContext {
       }
       
       return parseRecord(entity);
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);      
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }
@@ -590,7 +599,7 @@ public class DnsimpleContext {
   /**
    * Gets GSON to parse the Domain from the entity
    */
-  private Domain parseDomain(HttpEntity entity) throws IOException {
+  private Domain parseDomain(HttpEntity entity) {
     
     if(entity == null)
       return null;
@@ -610,9 +619,8 @@ public class DnsimpleContext {
       } else {
         result = it.next();
       }
-      
-    } catch (UnsupportedEncodingException e) {
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);
     }
     
     return result;
@@ -621,7 +629,7 @@ public class DnsimpleContext {
   /**
    * Gets GSON to parse the Record from the entity
    */
-  private Record parseRecord(HttpEntity entity) throws IOException {
+  private Record parseRecord(HttpEntity entity) {
     
     if(entity == null)
       return null;
@@ -639,9 +647,8 @@ public class DnsimpleContext {
       } else {
         result = it.next();
       }
-      
-    } catch (UnsupportedEncodingException e) {
-      
+    } catch(IOException e) {
+    	throw new RuntimeIOException(e);      
     }
     
     return result;

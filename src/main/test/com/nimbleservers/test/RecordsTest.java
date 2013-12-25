@@ -19,7 +19,7 @@ public class RecordsTest {
 		List<Record> records = ctx.getRecords(testDomain);
 		
 		for(Record r : records) {
-			System.out.println("record="+r);
+			System.out.println("name="+r.getName()+" record="+r);
 		}
 	}
 }

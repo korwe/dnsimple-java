@@ -1,17 +1,17 @@
-package com.nimbleservers.test;
+package com.nimbleservers.dnsimple;
 
 import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
 
-public class Utility {
+public class DnsUtility {
 
 	private static String email;
 	private static String key;
 	private static String domain;
 
 	static {
-		File f = new File("/Users/dhiller2/dnskeys.properties");		
+		File f = new File("/opt/dnskeys.properties");		
 		try {
 
 		Properties p = new Properties();

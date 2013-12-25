@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.nimbleservers.dnsimple.DnsimpleContext;
+import com.nimbleservers.dnsimple.DnsUtility;
 import com.nimbleservers.dnsimple.record.Record;
 import com.nimbleservers.dnsimple.record.Record.Builder;
 
@@ -13,9 +14,9 @@ public class RecordsTest {
 
 	@Test
 	public void testBasicAdd() {
-		String email = Utility.getEmail();
-		String key = Utility.getKey();
-		String testDomain = Utility.getDomain();
+		String email = DnsUtility.getEmail();
+		String key = DnsUtility.getKey();
+		String testDomain = DnsUtility.getDomain();
 		DnsimpleContext ctx = new DnsimpleContext(email, key);
 		
 		List<Record> records = ctx.getRecords(testDomain);

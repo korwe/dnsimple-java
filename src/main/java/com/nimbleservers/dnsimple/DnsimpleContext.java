@@ -417,7 +417,7 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public List<Record> getRecords(String domain) throws UnexpectedResponseException, IOException {
+  public List<Record> getRecords(String domain) {
     String uri = END_POINT + "/domains/" + domain + "/records";
     List<Record> result = new LinkedList<Record>();
     
@@ -451,7 +451,8 @@ public class DnsimpleContext {
             result.add(record);
         }
       }
-      
+    } catch(IOException e) {
+    	throw new RuntimeException(e);
     } finally {
       try { EntityUtils.consume(entity); } catch(Exception e) {}
     }

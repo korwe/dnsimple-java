@@ -57,7 +57,7 @@ import com.nimbleservers.dnsimple.record.Record;
  */
 public class DnsimpleContext {
   
-  public static final String END_POINT = "https://dnsimple.com";
+  public static final String END_POINT = DnsUtility.getUrl();
   public static final String CHARSET = "utf-8";
   
   private final Header headers[];
@@ -180,9 +180,9 @@ public class DnsimpleContext {
    *    DNSimple's API was not what was expected
    * @throws IOException If the connection was aborted
    */
-  public Domain addDomain(String domain) {
-    String uri = END_POINT + "/domains";
-    HashMap<String, Domain> map = new HashMap<String, Domain>();
+  public Domain addDomain(String domain, String id) {
+    String uri = END_POINT + "/domain_registrations";
+    HashMap<String, Object> map = new HashMap<String, Object>();
     HttpPost httpPost = new HttpPost(uri);
     
     int expectedCode = HttpStatus.SC_CREATED;
@@ -190,10 +190,14 @@ public class DnsimpleContext {
     
     HttpResponse response = null;
     HttpEntity entity = null;
-    try {    
-    	map.put("domain", new Domain(domain));
+    try {
+    	HashMap<String, String> domainMap = new HashMap<String, String>();
+    	domainMap.put("name", domain);
+    	domainMap.put("registrant_id", id);
+    	map.put("domain", domainMap);
     	httpPost.setHeaders(headers);
-    	httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+    	String json = gson.toJson(map);
+    	httpPost.setEntity(new StringEntity(json, CHARSET));
     
 
       response = httpClient.execute(httpPost);

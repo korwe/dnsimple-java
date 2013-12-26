@@ -9,7 +9,10 @@ public class DnsUtility {
 	private static String email;
 	private static String key;
 	private static String domain;
-
+	//used for registering new domains...
+	private static String userId;
+	private static String url;
+	
 	static {
 		File f = new File("/opt/dnskeys.properties");		
 		try {
@@ -20,6 +23,8 @@ public class DnsUtility {
 		email = p.getProperty("email");
 		key = p.getProperty("key");
 		domain = p.getProperty("domain");
+		userId = p.getProperty("id");
+		url = p.getProperty("url");
 		
 		} catch(Exception e) {
 			throw new RuntimeException("failed to load properties file", e);
@@ -42,6 +47,14 @@ public class DnsUtility {
 
 	public static String getDomain() {
 		return domain;
+	}
+
+	public static String getUserId() {
+		return userId;
+	}
+
+	public static String getUrl() {
+		return url;
 	}
 	
 }

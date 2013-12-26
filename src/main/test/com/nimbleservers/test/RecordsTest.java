@@ -7,11 +7,24 @@ import org.junit.Test;
 
 import com.nimbleservers.dnsimple.DnsimpleContext;
 import com.nimbleservers.dnsimple.DnsUtility;
+import com.nimbleservers.dnsimple.domain.Domain;
 import com.nimbleservers.dnsimple.record.Record;
 import com.nimbleservers.dnsimple.record.Record.Builder;
 
 public class RecordsTest {
 
+	@Test
+	public void testRegisterDomain() {
+		String email = DnsUtility.getEmail();
+		String key = DnsUtility.getKey();
+		DnsimpleContext ctx = new DnsimpleContext(email, key);
+		
+		String id = DnsUtility.getUserId();
+		Domain domain = ctx.addDomain("goosfsdfglexxxxx.com", id);
+		
+		System.out.println("domain="+domain);
+	}
+	
 	@Test
 	public void testBasicAdd() {
 		String email = DnsUtility.getEmail();

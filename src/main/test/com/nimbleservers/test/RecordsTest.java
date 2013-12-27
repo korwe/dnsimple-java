@@ -17,7 +17,8 @@ public class RecordsTest {
 	public void testRegisterDomain() {
 		String email = DnsUtility.getEmail();
 		String key = DnsUtility.getKey();
-		DnsimpleContext ctx = new DnsimpleContext(email, key);
+		String testDomain = DnsUtility.getDomain();
+		DnsimpleContext ctx = new DnsimpleContext(email, key, testDomain);
 		
 		String id = DnsUtility.getUserId();
 		Domain domain = ctx.addDomain("goosfsdfglexxxxx.com", id);
@@ -30,11 +31,11 @@ public class RecordsTest {
 		String email = DnsUtility.getEmail();
 		String key = DnsUtility.getKey();
 		String testDomain = DnsUtility.getDomain();
-		DnsimpleContext ctx = new DnsimpleContext(email, key);
+		DnsimpleContext ctx = new DnsimpleContext(email, key, testDomain);
 		
 		List<Record> records = ctx.getRecords(testDomain);
 		
-		String newDomain = "ours.test";
+		String newDomain = "ours3.test";
 		String ip = "127.0.0.1";
 		
 		for(Record r : records) {

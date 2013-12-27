@@ -57,7 +57,7 @@ import com.nimbleservers.dnsimple.record.Record;
  */
 public class DnsimpleContext {
   
-  public static final String END_POINT = DnsUtility.getUrl();
+  public final String endPoint;
   public static final String CHARSET = "utf-8";
   
   private final Header headers[];
@@ -67,7 +67,8 @@ public class DnsimpleContext {
   
   private DefaultHttpClient httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager());
   
-  public DnsimpleContext(String email, String apiKey) {
+  public DnsimpleContext(String email, String apiKey, String url) {
+	this.endPoint = url;
     this.headers = new Header[3];
     this.headers[0] = new BasicHeader("Accept", "application/json");
     this.headers[1] = new BasicHeader("X-DNSimple-Token", email + ":" + apiKey);
@@ -81,7 +82,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public List<Domain> getDomains() {
-    String uri = END_POINT + "/domains";
+    String uri = endPoint + "/domains";
     List<Domain> result = new LinkedList<Domain>();
     
     int expectedCode = HttpStatus.SC_OK;
@@ -139,7 +140,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public Domain getDomain(String domain) {
-    String uri = END_POINT + "/domains/" + domain;
+    String uri = endPoint + "/domains/" + domain;
     HttpGet httpGet = new HttpGet(uri);
     
     int expectedCode = HttpStatus.SC_OK;
@@ -181,7 +182,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public Domain addDomain(String domain, String id) {
-    String uri = END_POINT + "/domain_registrations";
+    String uri = endPoint + "/domain_registrations";
     HashMap<String, Object> map = new HashMap<String, Object>();
     HttpPost httpPost = new HttpPost(uri);
     
@@ -226,7 +227,7 @@ public class DnsimpleContext {
    */
   public boolean isDomainAvailable(String domain) {
     
-    String uri = END_POINT + "/domains/" + domain + "/check";
+    String uri = endPoint + "/domains/" + domain + "/check";
     
     HttpGet httpGet = null;
     HttpResponse response = null;
@@ -282,7 +283,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public Domain enableAutoRenewal(String domain) {
-    String uri = END_POINT + "/domains/" + domain + "/auto_renewal";
+    String uri = endPoint + "/domains/" + domain + "/auto_renewal";
     HashMap<String, Object> map = new HashMap<String, Object>();
     HttpPost httpPost = new HttpPost(uri);
     
@@ -329,7 +330,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public Domain disableAutoRenewal(String domain) {
-    String uri = END_POINT + "/domains/" + domain + "/auto_renewal";
+    String uri = endPoint + "/domains/" + domain + "/auto_renewal";
     HttpDelete httpDelete = new HttpDelete(uri);
     
     int expectedCode = HttpStatus.SC_OK;
@@ -374,7 +375,7 @@ public class DnsimpleContext {
       throw new IllegalStateException("Maximum of 6 name servers supported. Number given: " + nameServers.size());
     }
     
-    String uri = END_POINT + "/domains/" + domain + "/name_servers";
+    String uri = endPoint + "/domains/" + domain + "/name_servers";
     Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
     Map<String, String> inner = new LinkedHashMap<String, String>();
     Iterator<String> it = nameServers.iterator();
@@ -429,7 +430,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public List<Record> getRecords(String domain) {
-    String uri = END_POINT + "/domains/" + domain + "/records";
+    String uri = endPoint + "/domains/" + domain + "/records";
     List<Record> result = new LinkedList<Record>();
     
     int expectedCode = HttpStatus.SC_OK;
@@ -511,7 +512,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public Record addRecord(String domain, Record record) {
-    String uri = END_POINT + "/domains/" + domain + "/records";
+    String uri = endPoint + "/domains/" + domain + "/records";
     HashMap<String, Record> map = new HashMap<String, Record>();
     HttpPost httpPost = new HttpPost(uri);
     
@@ -561,7 +562,7 @@ public class DnsimpleContext {
    * @throws IOException If the connection was aborted
    */
   public Record updateRecord(String domain, String recordId, Record record) {
-    String uri = END_POINT + "/domains/" + domain + "/records/" + recordId;
+    String uri = endPoint + "/domains/" + domain + "/records/" + recordId;
     HashMap<String, Record> map = new HashMap<String, Record>();
     HttpPut httpPut = new HttpPut(uri);
     

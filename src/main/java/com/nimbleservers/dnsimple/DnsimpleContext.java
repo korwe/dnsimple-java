@@ -74,7 +74,14 @@ public class DnsimpleContext {
     this.headers[1] = new BasicHeader("X-DNSimple-Token", email + ":" + apiKey);
     this.headers[2] = new BasicHeader("Content-Type", "application/json; charset=" + CHARSET);
   }
-  
+
+  public DnsimpleContext(String domainToken, String url) {
+	this.endPoint = url;
+    this.headers = new Header[3];
+    this.headers[0] = new BasicHeader("Accept", "application/json");
+    this.headers[1] = new BasicHeader("X-DNSimple-Domain-Token", domainToken);
+    this.headers[2] = new BasicHeader("Content-Type", "application/json; charset=" + CHARSET);
+  }
   /**
    * @return a list of all domains 
    * @throws UnexpectedResponseException If the HTTP response code from

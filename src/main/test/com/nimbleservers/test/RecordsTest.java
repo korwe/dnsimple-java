@@ -17,7 +17,7 @@ public class RecordsTest {
 	public void testRegisterDomain() {
 		String email = DnsUtility.getEmail();
 		String key = DnsUtility.getKey();
-		String testUrl = DnsUtility.getTestUrl();
+		String testUrl = DnsUtility.getUrl();
 		DnsimpleContext ctx = new DnsimpleContext(email, key, testUrl);
 		
 		String id = DnsUtility.getUserId();
@@ -30,7 +30,7 @@ public class RecordsTest {
 	public void testBasicAdd() {
 		String email = DnsUtility.getEmail();
 		String key = DnsUtility.getKey();
-		String testUrl = DnsUtility.getTestUrl();
+		String testUrl = DnsUtility.getUrl();
 		DnsimpleContext ctx = new DnsimpleContext(email, key, testUrl);
 
 		String testDomain = DnsUtility.getDomainForTest();
@@ -65,4 +65,33 @@ public class RecordsTest {
 		return null;
 	}
 	
+	@Test
+	public void testBasicAddWithDomainKey() {
+		String domainToken = DnsUtility.getToken();
+		String testUrl = DnsUtility.getUrl();
+		DnsimpleContext ctx = new DnsimpleContext(domainToken, testUrl);
+
+		String testDomain = DnsUtility.getDomainForTest();
+		List<Record> records = ctx.getRecords(testDomain);
+		
+		String newDomain = "ddddd.test";
+		String ip = "127.0.0.1";
+		
+		for(Record r : records) {
+			Assert.assertNotEquals(newDomain, r.getName());
+			System.out.println("name="+r.getName()+" record="+r);
+		}
+		
+		Builder builder = Record.getBuilder();
+		builder.setName(newDomain).setRecordType("A").setContent("127.0.0.1");
+		Record record = builder.build();
+		Record fullRec = ctx.addRecord(testDomain, record);
+		System.out.println("full record="+fullRec);
+		
+		List<Record> list = ctx.getRecords(testDomain);
+		Record r = find(list, newDomain);
+		Assert.assertNotNull(r);
+		Assert.assertEquals(newDomain, r.getName());
+		Assert.assertEquals(ip, r.getContent());
+	}
 }

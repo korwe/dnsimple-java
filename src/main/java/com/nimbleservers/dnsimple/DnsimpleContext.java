@@ -41,6 +41,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -58,6 +60,7 @@ import com.nimbleservers.dnsimple.record.Record;
  */
 public class DnsimpleContext {
 
+	private static final Logger log = LoggerFactory.getLogger(DnsimpleContext.class);
 	public final String endPoint;
 	public static final String CHARSET = "utf-8";
 
@@ -198,7 +201,6 @@ public class DnsimpleContext {
 	}
 
 	/**
-	 * TODO: Doesn't work (I think - not sure of expected usage/behaviour)
 	 * <p>
 	 * Adds a domain to your account. <br />
 	 * <strong>NOTE:</strong> This does not register the domain, use
@@ -206,6 +208,7 @@ public class DnsimpleContext {
 	 * 
 	 * @param domain
 	 *            the name or the ID of the domain
+	 * @param id the registrant id causing this domain to be registered
 	 * @return details for the created domain
 	 * @throws UnexpectedResponseException
 	 *             If the HTTP response code from DNSimple's API was not what
@@ -230,6 +233,8 @@ public class DnsimpleContext {
 			map.put("domain", domainMap);
 			httpPost.setHeaders(headers);
 			String json = gson.toJson(map);
+			if(log.isDebugEnabled())
+				log.debug("sending json="+json);
 			httpPost.setEntity(new StringEntity(json, CHARSET));
 
 			response = httpClient.execute(httpPost);
@@ -345,7 +350,10 @@ public class DnsimpleContext {
 		try {
 			map.put("auto_renewal", new Object());
 			httpPost.setHeaders(headers);
-			httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+			String json = gson.toJson(map);
+			if(log.isDebugEnabled())
+				log.debug("sending json="+json);
+			httpPost.setEntity(new StringEntity(json, CHARSET));
 
 			response = httpClient.execute(httpPost);
 			entity = response.getEntity();
@@ -610,7 +618,10 @@ public class DnsimpleContext {
 		try {
 			map.put("record", record);
 			httpPost.setHeaders(headers);
-			httpPost.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+			String json = gson.toJson(map);
+			if(log.isDebugEnabled())
+				log.debug("sending json="+json);
+			httpPost.setEntity(new StringEntity(json, CHARSET));
 
 			response = httpClient.execute(httpPost);
 			entity = response.getEntity();
@@ -670,7 +681,10 @@ public class DnsimpleContext {
 		try {
 			map.put("record", record);
 			httpPut.setHeaders(headers);
-			httpPut.setEntity(new StringEntity(gson.toJson(map), CHARSET));
+			String json = gson.toJson(map);
+			if(log.isDebugEnabled())
+				log.debug("sending json="+json);
+			httpPut.setEntity(new StringEntity(json, CHARSET));
 
 			response = httpClient.execute(httpPut);
 			entity = response.getEntity();

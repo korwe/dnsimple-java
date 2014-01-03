@@ -20,8 +20,9 @@ public class RecordsTest {
 		String testUrl = DnsUtility.getUrl();
 		DnsimpleContext ctx = new DnsimpleContext(email, key, testUrl);
 		
-		String id = DnsUtility.getUserId();
-		Domain domain = ctx.addDomain("goosfsdfglexxxxx.com", id);
+		String idStr = DnsUtility.getUserId();
+		int id = Integer.parseInt(idStr);
+		Domain domain = ctx.addDomain("goosfsdfglexxxeexx.com", id);
 		
 		System.out.println("domain="+domain);
 	}

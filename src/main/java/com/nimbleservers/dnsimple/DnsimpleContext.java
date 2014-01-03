@@ -216,7 +216,7 @@ public class DnsimpleContext {
 	 * @throws IOException
 	 *             If the connection was aborted
 	 */
-	public Domain addDomain(String domain, String id) {
+	public Domain addDomain(String domain, Integer id) {
 		String uri = endPoint + "/domain_registrations";
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		HttpPost httpPost = new HttpPost(uri);
@@ -227,7 +227,7 @@ public class DnsimpleContext {
 		HttpResponse response = null;
 		HttpEntity entity = null;
 		try {
-			HashMap<String, String> domainMap = new HashMap<String, String>();
+			HashMap<String, Object> domainMap = new HashMap<String, Object>();
 			domainMap.put("name", domain);
 			domainMap.put("registrant_id", id);
 			map.put("domain", domainMap);

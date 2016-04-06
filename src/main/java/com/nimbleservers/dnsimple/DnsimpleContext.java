@@ -63,10 +63,12 @@ public class DnsimpleContext {
 	private static final Logger log = LoggerFactory.getLogger(DnsimpleContext.class);
 	public final String endPoint;
 	public static final String CHARSET = "utf-8";
+	private final String dnsimpleDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 	private final Header headers[];
 	private final Gson gson = new GsonBuilder().setFieldNamingPolicy(
-			FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+			FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+			.setDateFormat(dnsimpleDateFormat).create();
 
 	private DefaultHttpClient httpClient = new DefaultHttpClient(
 			new ThreadSafeClientConnManager());

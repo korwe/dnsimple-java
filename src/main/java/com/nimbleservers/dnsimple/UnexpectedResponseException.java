@@ -20,7 +20,7 @@ package com.nimbleservers.dnsimple;
  * Used to show that an unexpected HTTP status code was received.
  * @author Chris Strand
  */
-public class UnexpectedResponseException extends Exception {
+public class UnexpectedResponseException extends RuntimeException {
   
   private static final long serialVersionUID = 883232997136441178L;
   private int expected = 0;

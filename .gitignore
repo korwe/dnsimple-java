@@ -8,3 +8,4 @@ pom.xml.releaseBackup
 *.jar
 /output
 /.gradle
+/bin

@@ -24,19 +24,19 @@ import java.util.Date;
  */
 public class Domain {
   
-  private final String id;
-  private final String name;
-  private final String nameServerStatus;
-  private final String registrationStatus;
-  private final Date createdAt;
-  private final Date updatedAt;
+  private String id;
+  private String name;
+  private String nameServerStatus;
+  private String registrationStatus;
+  private Date createdAt;
+  private Date updatedAt;
   // DNSimple has the expiration date in two formats, this one is the same
   // format as the other dates in the JSON response
-  private final Date parsedExpirationDate;
-  private final String registrantId;
-  private final String userId;
-  private final Boolean autoRenew;
-  private final Boolean privateWhois;
+  private Date parsedExpirationDate;
+  private String registrantId;
+  private String userId;
+  private Boolean autoRenew;
+  private Boolean privateWhois;
   
   public Domain() {
     this(null);
@@ -55,49 +55,93 @@ public class Domain {
     this.autoRenew = null;
     this.privateWhois = null;
   }
-  
+
   public String getId() {
     return id;
   }
-  
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getName() {
     return name;
   }
-  
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public String getNameServerStatus() {
     return nameServerStatus;
   }
-  
+
+  public void setNameServerStatus(String nameServerStatus) {
+    this.nameServerStatus = nameServerStatus;
+  }
+
   public String getRegistrationStatus() {
     return registrationStatus;
+  }
+
+  public void setRegistrationStatus(String registrationStatus) {
+    this.registrationStatus = registrationStatus;
   }
 
   public Date getCreatedAt() {
     return createdAt;
   }
-  
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
   public Date getUpdatedAt() {
     return updatedAt;
   }
-  
-  public Date getExpiresAt() {
+
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public Date getParsedExpirationDate() {
     return parsedExpirationDate;
   }
-  
+
+  public void setParsedExpirationDate(Date parsedExpirationDate) {
+    this.parsedExpirationDate = parsedExpirationDate;
+  }
+
   public String getRegistrantId() {
     return registrantId;
+  }
+
+  public void setRegistrantId(String registrantId) {
+    this.registrantId = registrantId;
   }
 
   public String getUserId() {
     return userId;
   }
 
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
   public Boolean getAutoRenew() {
     return autoRenew;
   }
-  
+
+  public void setAutoRenew(Boolean autoRenew) {
+    this.autoRenew = autoRenew;
+  }
+
   public Boolean getPrivateWhois() {
     return privateWhois;
+  }
+
+  public void setPrivateWhois(Boolean privateWhois) {
+    this.privateWhois = privateWhois;
   }
 
   @Override

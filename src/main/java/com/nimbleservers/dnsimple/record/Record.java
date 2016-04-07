@@ -24,16 +24,17 @@ import java.util.Date;
  */
 public class Record {
   
-  private final String domainId;
-  private final String id;
-  private final String name;
-  private final String recordType;
-  private final String content;
-  private final Integer ttl;
-  private final Integer priority;
-  private final Date createdAt;
-  private final Date updatedAt;
-  
+  private String domainId;
+  private String id;
+  private String name;
+  private String recordType;
+  private String content;
+  private Integer ttl;
+  private Integer priority;
+  private Date createdAt;
+  private Date updatedAt;
+
+
   public Record() {
     this.domainId = null;
     this.id = null;
@@ -57,11 +58,7 @@ public class Record {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
-  
-  public static Builder getBuilder() {
-    return new Builder();
-  }
-  
+
   public String getDomainId() {
     return domainId;
   }
@@ -97,6 +94,11 @@ public class Record {
   public Date getUpdatedAt() {
     return updatedAt;
   }
+
+  public static Builder getBuilder() {
+    return new Builder();
+  }
+
 
   @Override
   public String toString() {
@@ -170,6 +172,41 @@ public class Record {
   }
 
 
+  public void setDomainId(String domainId) {
+    this.domainId = domainId;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setRecordType(String recordType) {
+    this.recordType = recordType;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public void setTtl(Integer ttl) {
+    this.ttl = ttl;
+  }
+
+  public void setPriority(Integer priority) {
+    this.priority = priority;
+  }
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
 
   public static class Builder {
     
